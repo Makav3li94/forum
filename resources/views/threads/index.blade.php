@@ -10,9 +10,14 @@
                     <div class="card-body">
                         @forelse($threads as $key=> $thread)
                             <article>
-                                <h4>
-                                    <a href="{{$thread->path()}}">{{$thread->title}}</a>
-                                </h4>
+                                <div class="level">
+                                    <h4 class="flex">
+                                        <a href="{{$thread->path()}}">{{$thread->title}}</a>
+                                    </h4>
+                                    <a href="{{$thread->path()}}">
+                                        <strong>{{$thread->replies_count}} {{\Illuminate\Support\Str::plural('reply',$thread->replies_count)}}</strong>
+                                    </a>
+                                </div>
                                 <p>
                                     {!! $thread->body !!}
                                 </p>

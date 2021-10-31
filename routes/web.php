@@ -23,9 +23,14 @@ Route::resource('/threads', '\App\Http\Controllers\ThreadController', ['except' 
 
 Route::get('/threads/{channel}/{thread}', [\App\Http\Controllers\ThreadController::class, 'show'])->name('threads.show');
 Route::post('/threads/{channel}/{thread}/replies', [\App\Http\Controllers\ReplyController::class, 'store'])->name("add_reply");
+Route::post('/replies/{reply}/favorites', [\App\Http\Controllers\FavoritesController::class, 'store'])->name("reply_favorite");
 
 
 Route::get('/threads/{channel}',[\App\Http\Controllers\ThreadController::class, 'index']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
