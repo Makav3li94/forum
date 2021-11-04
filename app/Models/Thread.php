@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordActivity;
 
     protected $guarded = [];
 
+    protected $with = ['creator', 'channel'];
 
     protected static function boot()
     {
@@ -18,7 +19,10 @@ class Thread extends Model
         self::addGlobalScope('replyCount', function ($builder) {
             $builder->withCount('replies');
         });
+
+
     }
+
 
     public function path()
     {
@@ -49,4 +53,11 @@ class Thread extends Model
     {
         return $filters->apply($query);
     }
+
+    /**
+     * @param $event
+     * @return string
+     * @throws \ReflectionException
+     */
+
 }

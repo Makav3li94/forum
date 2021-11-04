@@ -26,7 +26,7 @@ class ThreadController extends Controller
 
         $threads = $this->getThreads($channel, $filters);
 
-        if (\request()->wantsJson()){
+        if (\request()->wantsJson()) {
             return $threads;
         }
         return view('threads.index', compact('threads'));
@@ -75,8 +75,9 @@ class ThreadController extends Controller
      */
     public function show($channel_slug, Thread $thread)
     {
+
         $replies = $thread->replies()->paginate(20);
-        return view('threads.show', compact('thread','replies'));
+        return view('threads.show', compact('thread', 'replies'));
     }
 
     /**
@@ -108,9 +109,13 @@ class ThreadController extends Controller
      * @param \App\Models\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channel_slug, Thread $thread)
     {
-        //
+        if ($thread->user_id != auth()->id()) {
+            abort(403);
+        }
+        $thread->delete();
+        return redirect('threads');
     }
 
     /**

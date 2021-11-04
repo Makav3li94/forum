@@ -6,8 +6,16 @@
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <a href="">{{$thread->creator->name}}</a>
-                        {{ __('Threads') }}
+                        <div class="level">
+                            <a class="flex" href="{{route('user_profile',$thread->creator->name)}}">{{$thread->creator->name}}</a>
+                            @can('delete',$thread)
+                                <form action="{{$thread->path()}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            @endcan
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -24,7 +32,7 @@
                 {{$replies->links()}}
 
                 @auth()
-                    <form action="{{route('add_reply',[$thread->id,$thread->channel->id])}}" method="post">
+                    <form action="{{route('add_reply',[$thread->id,$thread->channel_id])}}" method="post">
                         @csrf
                         <div class="form-group">
                             <textarea class="form-control" name="body" placeholder="Add a reply" id="" cols="30" rows="10"></textarea>

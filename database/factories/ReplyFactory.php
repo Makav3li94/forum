@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Reply;
+use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +25,7 @@ class ReplyFactory extends Factory
     {
         return [
             'thread_id' => function () {
-                return User::factory()->create()->id;
+                return Thread::factory()->create()->id;
             },
             'user_id' => function () {
                 return User::factory()->create()->id;
