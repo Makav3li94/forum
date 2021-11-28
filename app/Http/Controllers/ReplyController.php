@@ -40,15 +40,15 @@ class ReplyController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store($channel_id,Thread $thread)
+    public function store($channel_id, Thread $thread)
     {
 
         request()->validate([
-            'body'=>'required',
+            'body' => 'required',
         ]);
 
         $thread->addReply([
-            'body' =>request('body'),
+            'body' => request('body'),
             'user_id' => auth()->user()->id,
         ]);
 
@@ -97,6 +97,10 @@ class ReplyController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        //
+        if ($reply->user_id != auth()->user()->id) {
+           return response([],403);
+        }
+        $reply->delete();
+        return redirect()->back();
     }
 }

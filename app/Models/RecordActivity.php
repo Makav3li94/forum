@@ -10,19 +10,24 @@ trait RecordActivity
     protected static function bootRecordActivity()
     {
         if (auth()->guest()) return;
-        foreach (static::getRecordEvents() as $event){
+        foreach (static::getRecordEvents() as $event) {
             static::$event(function ($model) use ($event) {
                 $model->recordActivity($event);
             });
         }
+
+        static::deleting(function ($model) {
+            $model->activity()->delete();
+        });
     }
 
-    protected function getActiviryType($event)
+    protected function getActivityType($event)
     {
         return $event . '_' . strtolower((New \ReflectionClass($this))->getShortName());
     }
 
-    protected static function getRecordEvents(){
+    protected static function getRecordEvents()
+    {
         return ['created'];
     }
 
@@ -30,13 +35,13 @@ trait RecordActivity
     {
         $this->activity()->create([
             'user_id' => auth()->id(),
-            'type' => $this->getActiviryType($event),
+            'type' => $this->getActivityType($event),
         ]);
     }
 
     public function activity()
     {
-        return $this->morphMany(Activity::class,'subject');
+        return $this->morphMany(Activity::class, 'subject');
     }
 
 }

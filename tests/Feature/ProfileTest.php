@@ -17,7 +17,6 @@ class ProfileTest extends TestCase
 
     public function a_user_has_a_profile()
     {
-        $this->withoutExceptionHandling();
         $user = create(User::class);
         $this->be($user);
         $this->get("/profiles/{$user->name}")->assertSee($user->name);

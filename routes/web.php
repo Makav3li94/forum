@@ -18,20 +18,17 @@ Route::get('/', function () {
 });
 
 Route::resource('/threads', '\App\Http\Controllers\ThreadController', ['except' => [
-    'show','destroy'
+    'show', 'destroy'
 ]]);
 
 Route::get('/threads/{channel}/{thread}', [\App\Http\Controllers\ThreadController::class, 'show'])->name('threads.show');
 Route::delete('/threads/{channel}/{thread}', [\App\Http\Controllers\ThreadController::class, 'destroy'])->name('threads.destroy');
 Route::post('/threads/{channel}/{thread}/replies', [\App\Http\Controllers\ReplyController::class, 'store'])->name("add_reply");
 Route::post('/replies/{reply}/favorites', [\App\Http\Controllers\FavoritesController::class, 'store'])->name("reply_favorite");
+Route::delete('/replies/{reply}', [\App\Http\Controllers\ReplyController::class, 'destroy'])->name('replies.destroy');
 
 
-Route::get('/threads/{channel}',[\App\Http\Controllers\ThreadController::class, 'index']);
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/threads/{channel}', [\App\Http\Controllers\ThreadController::class, 'index']);
 
 Auth::routes();
 
@@ -41,5 +38,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Auth::routes();
 
-Route::get('/profiles/{user}',[App\Http\Controllers\ProfileController::class, 'show'])->name('user_profile');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get('/profiles/{user}', [App\Http\Controllers\ProfileController::class, 'show'])->name('user_profile');
